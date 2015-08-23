@@ -1,0 +1,52 @@
+<!--{include manage_header}-->
+
+<div id="bdw" class="bdw">
+<div id="bd" class="cf">
+<div id="coupons">
+	<div class="dashboard" id="dashboard">
+		
+	</div>
+    <div id="content" class="coupons-box clear mainwide">
+		<div class="box clear">
+            <div class="box-top"></div>
+            <div class="box-content">
+                <div class="head">
+                    <h2>第三方码</h2>
+					<ul class="filter">
+						<li><form method="get">项目ID：<input type="text" class="h-input" name="team_id" value="${htmlspecialchars($team_id)}" >&nbsp;用户：<input type="text" class="h-input" name="uname" value="${htmlspecialchars($uname)}" >&nbsp;订单号：<input type="text" class="h-input" name="order_id" value="${htmlspecialchars($order_id)}" >&nbsp;流水号：<input type="text" class="h-input" name="id" value="${htmlspecialchars($id)}" >&nbsp;<input type="submit" value="筛选" class="formbutton"  style="padding:1px 6px;"/><form></li>
+					</ul>
+				</div>
+                <div class="sect">
+					<table id="orders-list" cellspacing="0" cellpadding="0" border="0" class="coupons-table">
+					<tr><th width="100">流水号</th><th width="100">订单号</th><th width="420">项目</th><th width="180">用户</th><th width="80" nowrap>截至日期</th><th width="40" nowrap>次数</th><th width="40" nowrap>操作</th></tr>
+					<!--{loop $codes $index $one}-->
+					<tr ${$index%2?'':'class="alt"'} id="order-list-id-{$one['id']}">
+						<td>{$one['id']}<br /><span style="color:red">{$one['sys_seq']}</span> <span style="color:red">{$one['msg']}</span></td>
+						<td>{$orders[$one['order_id']]['id']}</td>
+						<td>{$one['team_id']}&nbsp;(<a class="deal-title" href="/team.php?id={$one['team_id']}" target="_blank">{$teams[$one['team_id']]['product']}</a>)</td>
+						<td nowrap>{$users[$one['user_id']]['email']}<br/>{$users[$one['user_id']]['username']}</td>
+						<td nowrap>${date('Y-m-d',$one['expire_time'])}</td>
+						<td>{$one['mms']}</td>
+						<!--{if $one['status'] ==0 && $one['expire_time'] >= $daytime}-->
+    						<td class="op">
+    						<!--{if $one['sys_seq']}-->
+    							<a href="/zhongyu/ajax.php?action=resend&id={$one['id']}" class="ajaxlink">重发</a><br />
+    						<!--{else}-->
+    							<a href="/zhongyu/ajax.php?action=recreate&id={$one['id']}" class="ajaxlink" style="color:blue">重试</a><br />
+    						<!--{/if}-->
+    						</td>
+    					<!--{/if}-->
+					</tr>
+					<!--{/loop}-->
+					<tr><td colspan="7">{$pagestring}</tr>
+                    </table>
+				</div>
+            </div>
+            <div class="box-bottom"></div>
+        </div>
+    </div>
+</div>
+</div> <!-- bd end -->
+</div> <!-- bdw end -->
+
+<!--{include manage_footer}-->
